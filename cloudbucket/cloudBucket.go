@@ -102,7 +102,7 @@ func GetFileFromGoogleStorage() gin.HandlerFunc {
 			return
 		}
 
-		if isDirectly == "download" {
+		if isDirectly != "download" {
 
 			//function get url file from google storage
 			opts := &storage.SignedURLOptions{
