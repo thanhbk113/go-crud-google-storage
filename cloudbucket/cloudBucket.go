@@ -128,7 +128,7 @@ func GetFileFromGoogleStorage() gin.HandlerFunc {
 
 		c.JSON(http.StatusOK, gin.H{
 			"message":      "file downloaded successfully",
-			"destination:": "C:\\Users\\thanh\\OneDrive\\Máy tính\\qua-mon-mmt\\" + f.Name(),
+			"destination:": "C:\\Users\\thanh\\OneDrive\\Máy tính\\go-pass-mmt\\" + f.Name(),
 		})
 
 	}
