@@ -13,7 +13,7 @@ func CloudRoutes(incoming *gin.Engine) {
 			"message": "pong",
 		})
 	})
-	incoming.GET("/cloud-storage-bucket/:nameObject", cloudbucket.GetFileFromGoogleStorage())
+	incoming.GET("/cloud-storage-bucket/:nameObject/:isDirectly", cloudbucket.GetFileFromGoogleStorage())
 
 	incoming.DELETE("/cloud-storage-bucket/:nameObject", cloudbucket.DeleteFileFromGoogleStorage())
 }

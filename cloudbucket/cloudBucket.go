@@ -1,10 +1,12 @@
 package cloudbucket
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
@@ -87,6 +89,7 @@ func GetFileFromGoogleStorage() gin.HandlerFunc {
 
 		bucket := "mmt-app"
 		object := c.Params.ByName("nameObject")
+		isDirectly := c.Params.ByName("isDirectly")
 
 		ctx := appengine.NewContext(c.Request)
 
@@ -99,7 +102,35 @@ func GetFileFromGoogleStorage() gin.HandlerFunc {
 			return
 		}
 
+		if isDirectly == "true" {
+
+			//function get url file from google storage
+			opts := &storage.SignedURLOptions{
+				Scheme:  storage.SigningSchemeV4,
+				Method:  "GET",
+				Expires: time.Now().Add(15 * time.Minute),
+			}
+
+			u, err := storageClient.Bucket(bucket).SignedURL(object, opts)
+
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": err.Error(),
+					"error":   true,
+				})
+				return
+			}
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "file get successfully",
+				"url":     u,
+			})
+			return
+		}
+
 		u, err := storageClient.Bucket(bucket).Object(object).NewReader(ctx)
+
+		fmt.Println(u)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
