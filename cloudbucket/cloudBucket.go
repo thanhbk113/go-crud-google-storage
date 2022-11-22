@@ -20,9 +20,9 @@ var (
 
 // HandleFileUploadToBucket uploads file to bucket
 func HandleFileUploadToBucket() gin.HandlerFunc {
+
 	return func(c *gin.Context) {
 		bucket := "mmt-app"
-
 		var err error
 
 		ctx := appengine.NewContext(c.Request)
@@ -94,6 +94,8 @@ func GetFileFromGoogleStorage() gin.HandlerFunc {
 		ctx := appengine.NewContext(c.Request)
 
 		storageClient, err := storage.NewClient(ctx, option.WithCredentialsFile("keys.json")) //your credentials file
+		// storageClient, err := storage.NewClient(ctx, option.WithAPIKey("AIzaSyD4aCq0V6MnH8dvhzJC8zE79N8V4SA2pHw")) //your credentials file
+
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": err.Error(),
